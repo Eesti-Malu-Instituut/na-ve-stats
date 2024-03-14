@@ -28,24 +28,10 @@ textarea {
     border-radius: 4px;
     resize: vertical;
 }
-button {
-    /* display: block;
-    width: 100%; */
-    padding: 10px;
-    font-size: 18px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-button:hover {
-    background-color: #0056b3;
-}
 #result {
     white-space: pre-wrap;
     padding: 20px;
-    font-size: 16px;
+    font-size: 1em;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
     border-radius: 4px;
