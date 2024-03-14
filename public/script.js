@@ -14,42 +14,61 @@ const fetchAllikad = async () => {
 
     const allikadResult = await allikadResponse.json();
 
-    // Clear previous result
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = '';
+    const filtersDiv = document.getElementById('filters');
 
-    // Create radio controls for each row
+    const switchLabels = {'off': 'x', 'na': '.', 'on': 'v'}
+    // Create toggle controls for each row
     allikadResult.forEach((row, index) => {
-        const rowDiv = document.createElement('li');
+        const rowDiv = document.createElement('div');
         rowDiv.classList.add('row');
+
+        // Create toggle buttons for "off", "na", and "on"
+        ['off', 'na', 'on'].forEach((value) => {
+            const toggleInput = document.createElement('button');
+            toggleInput.type = 'button';
+            toggleInput.name = row.kood;
+            toggleInput.id = `toggle-${value}`;
+            toggleInput.value = value;
+            toggleInput.textContent = switchLabels[value]; // Add text content to buttons
+            toggleInput.classList.add('toggle'); // Add toggle class
+            toggleInput.classList.add(value); // Add class for styling (e.g., off, na, on)
+            if (value === 'na') {
+                toggleInput.setAttribute('checked', 'true');
+            }
+            rowDiv.appendChild(toggleInput);
+        });
 
         // Display the value of "allikas" as a label
         const label = document.createElement('label');
         label.textContent = row.allikas;
         rowDiv.appendChild(label);
 
-        // Create radio buttons for "off", "N/A", and "on"
-        ['off', 'N/A', 'on'].forEach((value) => {
-            const radio = document.createElement('input');
-            radio.type = 'radio';
-            radio.name = `row-${index}`;
-            radio.value = value;
-            if (value === 'N/A') {
-                radio.checked = true; // Set "N/A" as default checked
-            }
-            rowDiv.appendChild(radio);
+        // Add rowDiv to the filtersDiv
+        filtersDiv.appendChild(rowDiv);
+    });
 
-            const buttonLabel = document.createElement('label');
-            buttonLabel.textContent = value;
-            rowDiv.appendChild(buttonLabel);
+    document.querySelectorAll('.toggle').forEach((toggleLabel) => {
+        toggleLabel.addEventListener('click', (e) => {
+            // Ucheck other buttons in the same row
+            const row = e.target.parentElement;
+            row.querySelectorAll('button[type="button"]').forEach((button) => {
+                button.removeAttribute('checked');
+            });
+            // Check the clicked button
+            e.target.setAttribute('checked', 'true');
+            const selectedRows = [];
+            document.querySelectorAll('button[type="button"][checked="true"]').forEach((checkedFilter) => {
+                // skip the na values as they are not relevant
+                if (checkedFilter.value === 'na') {
+                    return;
+                }
+                const kood = checkedFilter.name;
+                const value = checkedFilter.value;
+                selectedRows.push(`${kood}: ${value}`);
+            });
+            document.getElementById('state').value = selectedRows.join('\n');
         });
-
-        // Add rowDiv to the resultDiv
-        resultDiv.appendChild(rowDiv);
     });
 };
-fetchAllikad()
-document.getElementById('queryForm').dispatchEvent(new Event('submit'));
 
-    // const query = document.getElementById('query').value;
-    // const response = await fetch('/query', { ...options, body: JSON.stringify({ query: query }) });
+fetchAllikad()

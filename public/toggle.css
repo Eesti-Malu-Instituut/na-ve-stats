@@ -1,0 +1,40 @@
+/* toggle.css */
+
+/* Default style for toggle buttons */
+.toggle {
+    width: 40px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    border: none;
+    border-radius: 50%; /* Rounded shape */
+    cursor: pointer;
+}
+
+/* Red for off */
+.off {
+    background-color: rgba(255, 0, 0, 0.2); /* Faint red */
+    border: 1px solid rgba(255, 0, 0, 1); /* Red border */
+}
+
+.off[checked="true"] {
+    background-color: rgba(255, 0, 0, 1); /* Vivid red when checked */
+}
+
+/* Yellow for na */
+.na {
+    background-color: rgba(255, 255, 0, 0.2); /* Faint yellow */
+    border: 1px solid rgba(255, 255, 0, 1); /* Yellow border */
+}
+
+.na[checked="true"] {
+    background-color: rgba(255, 255, 0, 1); /* Vivid yellow when checked */
+}
+
+/* Green for on */
+.on {
+    background-color: rgba(0, 255, 0, 0.2); /* Faint green */
+    border: 1px solid rgba(0, 255, 0, 1); /* Green border */
+}
+
+.on[checked="true"] {
+    background-color: rgba(0, 255, 0, 1); /* Vivid green when checked */
+}

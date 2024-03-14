@@ -29,8 +29,8 @@ textarea {
     resize: vertical;
 }
 button {
-    display: block;
-    width: 100%;
+    /* display: block;
+    width: 100%; */
     padding: 10px;
     font-size: 18px;
     background-color: #007bff;
@@ -54,10 +54,7 @@ button:hover {
     margin-bottom: 10px;
 }
 
-input[type="radio"] {
-    margin-right: 5px;
+label {
+    margin: 0 1em;
 }
 
-label {
-    margin-right: 15px;
-}
