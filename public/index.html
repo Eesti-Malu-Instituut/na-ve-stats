@@ -1,0 +1,35 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL Query Tool</title>
+</head>
+<body>
+    <h1>MySQL Query Tool</h1>
+    <form id="queryForm">
+        <label for="query">Enter SQL Query:</label><br>
+        <textarea id="query" name="query" rows="4" cols="50"></textarea><br>
+        <button type="submit">Execute Query</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('queryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = document.getElementById('query').value;
+            const response = await fetch('/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query })
+            });
+            const result = await response.json();
+            document.getElementById('result').innerText = JSON.stringify(result, null, 2);
+        });
+    </script>
+</body>
+</html>
