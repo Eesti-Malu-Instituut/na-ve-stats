@@ -5,31 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MySQL Query Tool</title>
+    <title>Naïve Stats</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>MySQL Query Tool</h1>
-    <form id="queryForm">
-        <label for="query">Enter SQL Query:</label><br>
-        <textarea id="query" name="query" rows="4" cols="50"></textarea><br>
-        <button type="submit">Execute Query</button>
-    </form>
-    <div id="result"></div>
+    <div class="container">
+        <h1>Naïve Stats</h1>
+        <form id="queryForm">
+            <label for="query">SQL Query:</label><br>
+            <textarea id="query" name="query" rows="4" cols="50">select kood, allikas from allikad
+where isFilter = 1</textarea><br>
+            <button type="submit">Execute Query</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
 
     <script>
-        document.getElementById('queryForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const query = document.getElementById('query').value;
-            const response = await fetch('/query', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ query })
-            });
-            const result = await response.json();
-            document.getElementById('result').innerText = JSON.stringify(result, null, 2);
-        });
     </script>
 </body>
 </html>
