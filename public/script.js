@@ -49,6 +49,21 @@ const fetchAllikad = async () => {
 
     document.querySelectorAll('.toggle').forEach((toggleLabel) => {
         toggleLabel.addEventListener('click', async (e) => {
+            // Disable all toggle buttons while the query runs
+            document.querySelectorAll('.toggle').forEach((toggleButton) => {
+                toggleButton.disabled = true;
+            });
+    
+            // Record the start time
+            const startTime = Date.now();
+    
+            // Update elapsed time every 100 milliseconds
+            const updateInterval = setInterval(() => {
+                const elapsedTime = (Date.now() - startTime) / 100; // Convert to tenths of a second
+                const roundedTime = Math.round(elapsedTime) / 10; // Round to one decimal place
+                document.getElementById('queryResult').textContent = `Elapsed Time: ${roundedTime.toFixed(1)} s`;
+            }, 100); // Update interval set to 100 milliseconds
+    
             // Ucheck other buttons in the same row
             const row = e.target.parentElement;
             row.querySelectorAll('button[type="button"]').forEach((button) => {
@@ -56,8 +71,10 @@ const fetchAllikad = async () => {
             });
             // Check the clicked button
             e.target.setAttribute('checked', 'true');
-            const selectedOnRows = [];
-            const selectedOffRows = [];
+    
+            // Build the list of allikas values to be included and excluded in the query
+            const includedAllikas = [];
+            const excludedAllikas = ['']; // Add an empty string to avoid SQL error because of missing value
             document.querySelectorAll('button[type="button"][checked="true"]').forEach((checkedFilter) => {
                 // skip the na values as they are not relevant
                 if (checkedFilter.value === 'na') {
@@ -65,22 +82,52 @@ const fetchAllikad = async () => {
                 }
                 const kood = checkedFilter.name;
                 if (checkedFilter.value === 'on') {
-                    selectedOnRows.push(kood);
+                    includedAllikas.push(kood);
                 } else {
-                    selectedOffRows.push(kood);
+                    excludedAllikas.push(kood);
                 }
             });
-            if (selectedOnRows.length > 0) {
-                let countQuery = `select distinct persoon\n  from repis.kirjed\n where allikas in ('${selectedOnRows.join("','")}')\n   and persoon <> '0000000000'`
-                if (selectedOffRows.length > 0) {
-                    countQuery += `\n   and persoon not in\n(\nselect distinct persoon\n  from repis.kirjed\n where allikas in ('${selectedOffRows.join("','")}')\n)`
-                }
+    
+            if (includedAllikas.length > 0) {
+                // Convert the arrays into SQL terms
+                const includedAllikasTerm = includedAllikas.map(row => `'${row}'`).join(',');
+                let countQuery = `SELECT DISTINCT k.persoon
+                                    FROM repis.kirjed k`;
+    
+                //  add the JOIN for excluded allikas
+                const excludedAllikasTerm = excludedAllikas.map(row => `'${row}'`).join(',');
+                countQuery += ` LEFT JOIN (SELECT DISTINCT persoon FROM repis.kirjed WHERE allikas IN (${excludedAllikasTerm})) ex 
+                                ON k.persoon = ex.persoon`;
+    
+                // Add the WHERE clause for included allikas and excluded persoon
+                countQuery += ` WHERE k.allikas IN (${includedAllikasTerm})
+                                AND k.persoon <> '0000000000'
+                                AND ex.persoon IS NULL`;
+    
+                // Set the query value to the textarea
                 document.getElementById('query').value = countQuery;
+    
+                // Fetch and process the count result
                 const countResponse = await fetch('/query', { ...options, body: JSON.stringify({ query: countQuery }) });
                 const countResult = await countResponse.json();
-                console.log(`Count: ${countResult.length} from on: ${selectedOnRows}, off: ${selectedOffRows}`);
-                document.getElementById('queryResult').textContent = countResult.length;
+    
+                // Log the count and display it in the result element
+                console.log(`Count: ${countResult.length}`);
+                const elapsed = document.getElementById('queryResult').textContent;
+                document.getElementById('queryResult').textContent = `Count: ${countResult.length}\n${elapsed}`;
+            } else {
+                // If no allikas is included, clear the query and result elements
+                document.getElementById('query').value = '';
+                document.getElementById('queryResult').textContent = '';
             }
+    
+            // Clear the updateInterval when the query completes
+            clearInterval(updateInterval);
+    
+            // Re-enable toggle buttons after the query completes
+            document.querySelectorAll('.toggle').forEach((toggleButton) => {
+                toggleButton.disabled = false;
+            });
         });
     });
 };
