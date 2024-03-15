@@ -7,43 +7,67 @@ body {
     background-color: #f0f0f0;
     color: #333;
 }
+
 .container {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
+    border: black 2px solid;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 h1 {
     text-align: center;
     color: #007bff;
 }
+
+#staticTopSection {
+    display: flex;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+#staticTopSectionLeft,
+#staticTopSectionRight {
+    padding: 0px 1em;
+    box-sizing: border-box;
+}
+
+#staticTopSectionLeft {
+    border-right: 2px solid black;
+    width: 75%;
+}
+#staticTopSectionRight {
+    width: 25%;
+}
+
 form {
     margin-bottom: 20px;
 }
-textarea {
-    width: 70%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-}
+
+#resultQuery,
 #queryResult {
     white-space: pre-wrap;
-    padding: 20px;
-    font-size: 1em;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    float: right;
-}
-.row {
-    margin-bottom: 10px;
+    font-size: 16px;
 }
 
-label {
-    margin: 0 1em;
+#filters {
+    overflow-y: auto;
+    border-top: 2px solid black; /* Add a border between top section and filters */
+    padding-top: 20px; /* Add some space between top section and filters */
 }
 
+.filtersRow {
+    display: flex;
+    margin-bottom: 0.5em;
+    align-items: center;
+}
+
+.allikas {
+    font-size: 12px;
+    color: #666;
+    display: inline;
+    margin-left: 1em;
+}

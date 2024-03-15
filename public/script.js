@@ -15,6 +15,9 @@ const sprintf = (template, ...args) => {
     return template.replace(/%s/g, () => args.shift());
 }
 
+const queryResultElement = document.getElementById('queryResult');
+const resultQueryElement = document.getElementById('resultQuery');
+
 const options = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -35,7 +38,9 @@ const fetchAllikad = async () => {
     // Create toggle controls for each row
     allikadResult.forEach((row, index) => {
         const rowDiv = document.createElement('div');
-        rowDiv.classList.add('row');
+        rowDiv.classList.add('filtersRow');
+        const toggleSwitchDiv = document.createElement('div');
+        toggleSwitchDiv.classList.add('toggle-switch');
 
         // Create toggle buttons for "off", "na", and "on"
         ['off', 'na', 'on'].forEach((value) => {
@@ -50,13 +55,15 @@ const fetchAllikad = async () => {
             if (value === 'na') {
                 toggleInput.setAttribute('checked', 'true');
             }
-            rowDiv.appendChild(toggleInput);
+            rowDiv.appendChild(toggleSwitchDiv);
+            toggleSwitchDiv.appendChild(toggleInput);
         });
 
         // Display the value of "allikas" as a label
-        const label = document.createElement('label');
-        label.textContent = row.allikas;
-        rowDiv.appendChild(label);
+        const allikas = document.createElement('div');
+        allikas.textContent = row.allikas;
+        allikas.classList.add('allikas');
+        rowDiv.appendChild(allikas);
 
         // Add rowDiv to the filtersDiv
         filtersDiv.appendChild(rowDiv);
@@ -115,7 +122,7 @@ const fetchAllikad = async () => {
                 let countQuery = sprintf(COUNT_QUERY_TEMPLATE, excludedAllikasTerm, includedAllikasTerm);
 
                 // Set the query value to the textarea
-                document.getElementById('query').value = countQuery;
+                resultQueryElement.innerHTML = highlightSQL(countQuery);
     
                 // Fetch and process the count result
                 const countResponse = await fetch('/query', { ...options, body: JSON.stringify({ query: countQuery }) });
@@ -123,12 +130,12 @@ const fetchAllikad = async () => {
     
                 // Log the count and display it in the result element
                 console.log(`Count: ${countResult.length}`);
-                const elapsed = document.getElementById('queryResult').textContent;
-                document.getElementById('queryResult').textContent = `Count: ${countResult.length}\n${elapsed}`;
+                const elapsed = queryResultElement.textContent;
+                queryResultElement.textContent = `Count: ${countResult.length}\n${elapsed}`;
             } else {
                 // If no allikas is included, clear the query and result elements
-                document.getElementById('query').value = '';
-                document.getElementById('queryResult').textContent = '';
+                resultQueryElement.textContent = '';
+                queryResultElement.textContent = '';
             }
     
             // Clear the updateInterval when the query completes
@@ -140,6 +147,10 @@ const fetchAllikad = async () => {
             });
         });
     });
+};
+
+const highlightSQL = (sql) => {
+    return sql.replace(/(SELECT|FROM|LEFT JOIN|WHERE|AND|OR|IN|ON|DISTINCT|IS|NULL)/g, '<span class="sql-keyword">$1</span>');
 };
 
 fetchAllikad()

@@ -6,48 +6,59 @@
     --color-yellow: 255, 255, 0;
     --unchecked-alpha: 0.2; /* Default alpha value for unchecked state */
     --checked-alpha: 1; /* Default alpha value for checked state */
+    --toggle-border-radius: 10px; /* Default border radius */
 }
 
-/* Default style for toggle buttons */
-.toggle {
-    width: 2em;
-    height: 2em;
-    border: none;
-    border-radius: 35%;
-    padding: 0;
-    font-size: 0.5em;
-    cursor: pointer;
+.toggle-switch {
+    display: inline-block;
+    border: 1px solid #7b1f06;
+    border-radius: var(--toggle-border-radius);
+    overflow: hidden;
+    white-space: nowrap;
 }
-.toggle:hover {
+
+.toggle-switch button {
+    width: 1.5em;
+    height: 1.5em;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+.toggle-switch button:hover {
     background-color: #0056b3;
 }
 
 /* Red for off */
-.toggle.off {
+.toggle-switch button.off {
     background-color: rgba(var(--color-red), var(--unchecked-alpha));
-    border: 1px solid white;
+    /* border: 1px solid white; */
+    border-top-left-radius: var(--toggle-border-radius);
+    border-bottom-left-radius: var(--toggle-border-radius);
 }
 
-.toggle.off[checked="true"] {
+.toggle-switch button.off[checked="true"] {
     background-color: rgba(var(--color-red), var(--checked-alpha));
 }
 
 /* Yellow for na */
-.toggle.na {
+.toggle-switch button.na {
     background-color: rgba(var(--color-yellow), var(--unchecked-alpha));
-    border: 1px solid white;
+    /* border: 1px solid white; */
 }
 
-.toggle.na[checked="true"] {
+.toggle-switch button.na[checked="true"] {
     background-color: rgba(var(--color-yellow), var(--checked-alpha));
 }
 
 /* Green for on */
-.toggle.on {
+.toggle-switch button.on {
     background-color: rgba(var(--color-green), var(--unchecked-alpha));
-    border: 1px solid white;
+    /* border: 1px solid white; */
+    border-top-right-radius: var(--toggle-border-radius);
+    border-bottom-right-radius: var(--toggle-border-radius);
 }
 
-.toggle.on[checked="true"] {
+.toggle-switch button.on[checked="true"] {
     background-color: rgba(var(--color-green), var(--checked-alpha));
 }
