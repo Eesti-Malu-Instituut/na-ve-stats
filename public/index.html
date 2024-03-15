@@ -14,12 +14,15 @@
     <div class="container">
 
         <h1>Naïve Stats</h1>
+
+        <!-- query textarea -->
+        <form id="queryForm">
+            <label for="query">query:</label><br>
+            <textarea id="query" name="query" rows="11" cols="50"></textarea><br>
+        </form>    
         
-        <!-- State textarea -->
-        <form id="stateForm">
-            <label for="state">state:</label><br>
-            <textarea id="state" name="state" rows="4" cols="50"></textarea><br>
-        </form>
+        <!-- query result -->
+        <div id="queryResult"></div>
 
         <!-- Filters -->
         <div id="filters"></div>

@@ -21,20 +21,21 @@ form {
     margin-bottom: 20px;
 }
 textarea {
-    width: 100%;
+    width: 70%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
 }
-#result {
+#queryResult {
     white-space: pre-wrap;
     padding: 20px;
     font-size: 1em;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
     border-radius: 4px;
+    float: right;
 }
 .row {
     margin-bottom: 10px;

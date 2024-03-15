@@ -48,7 +48,7 @@ const fetchAllikad = async () => {
     });
 
     document.querySelectorAll('.toggle').forEach((toggleLabel) => {
-        toggleLabel.addEventListener('click', (e) => {
+        toggleLabel.addEventListener('click', async (e) => {
             // Ucheck other buttons in the same row
             const row = e.target.parentElement;
             row.querySelectorAll('button[type="button"]').forEach((button) => {
@@ -56,17 +56,31 @@ const fetchAllikad = async () => {
             });
             // Check the clicked button
             e.target.setAttribute('checked', 'true');
-            const selectedRows = [];
+            const selectedOnRows = [];
+            const selectedOffRows = [];
             document.querySelectorAll('button[type="button"][checked="true"]').forEach((checkedFilter) => {
                 // skip the na values as they are not relevant
                 if (checkedFilter.value === 'na') {
                     return;
                 }
                 const kood = checkedFilter.name;
-                const value = checkedFilter.value;
-                selectedRows.push(`${kood}: ${value}`);
+                if (checkedFilter.value === 'on') {
+                    selectedOnRows.push(kood);
+                } else {
+                    selectedOffRows.push(kood);
+                }
             });
-            document.getElementById('state').value = selectedRows.join('\n');
+            if (selectedOnRows.length > 0) {
+                let countQuery = `select distinct persoon\n  from repis.kirjed\n where allikas in ('${selectedOnRows.join("','")}')\n   and persoon <> '0000000000'`
+                if (selectedOffRows.length > 0) {
+                    countQuery += `\n   and persoon not in\n(\nselect distinct persoon\n  from repis.kirjed\n where allikas in ('${selectedOffRows.join("','")}')\n)`
+                }
+                document.getElementById('query').value = countQuery;
+                const countResponse = await fetch('/query', { ...options, body: JSON.stringify({ query: countQuery }) });
+                const countResult = await countResponse.json();
+                console.log(countResult);
+                document.getElementById('queryResult').textContent = countResult.length;
+            }
         });
     });
 };
