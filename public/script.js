@@ -1,4 +1,19 @@
 // script.js
+const COUNT_QUERY_TEMPLATE =
+`SELECT DISTINCT k.persoon
+FROM repis.kirjed k
+LEFT JOIN (
+    SELECT DISTINCT persoon
+    FROM repis.kirjed
+    WHERE allikas IN (%s)
+) ex ON k.persoon = ex.persoon
+WHERE k.allikas IN (%s)
+AND k.persoon <> '0000000000'
+AND ex.persoon IS NULL
+`
+const sprintf = (template, ...args) => {
+    return template.replace(/%s/g, () => args.shift());
+}
 
 const options = {
     method: 'POST',
@@ -96,19 +111,9 @@ const fetchAllikad = async () => {
             if (includedAllikas.length > 0) {
                 // Convert the arrays into SQL terms
                 const includedAllikasTerm = includedAllikas.map(row => `'${row}'`).join(',');
-                let countQuery = `SELECT DISTINCT k.persoon
-                                    FROM repis.kirjed k`;
-    
-                //  add the JOIN for excluded allikas
                 const excludedAllikasTerm = excludedAllikas.map(row => `'${row}'`).join(',');
-                countQuery += ` LEFT JOIN (SELECT DISTINCT persoon FROM repis.kirjed WHERE allikas IN (${excludedAllikasTerm})) ex 
-                                ON k.persoon = ex.persoon`;
-    
-                // Add the WHERE clause for included allikas and excluded persoon
-                countQuery += ` WHERE k.allikas IN (${includedAllikasTerm})
-                                AND k.persoon <> '0000000000'
-                                AND ex.persoon IS NULL`;
-    
+                let countQuery = sprintf(COUNT_QUERY_TEMPLATE, excludedAllikasTerm, includedAllikasTerm);
+
                 // Set the query value to the textarea
                 document.getElementById('query').value = countQuery;
     
