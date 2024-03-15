@@ -1,19 +1,19 @@
 /* toggle.css */
 
 :root {
-    --color-red: 255, 0, 0; /* RGB components of red color */
-    --color-green: 0, 255, 0; /* RGB components of green color */
-    --color-yellow: 255, 255, 0; /* RGB components of yellow color */
+    --color-red: 255, 0, 0;
+    --color-green: 0, 255, 0;
+    --color-yellow: 255, 255, 0;
     --unchecked-alpha: 0.2; /* Default alpha value for unchecked state */
     --checked-alpha: 1; /* Default alpha value for checked state */
 }
 
 /* Default style for toggle buttons */
 .toggle {
-    width: 2em; /* Adjust width as needed */
-    height: 2em; /* Adjust height as needed */
+    width: 2em;
+    height: 2em;
     border: none;
-    border-radius: 35%; /* Rounded shape */
+    border-radius: 35%;
     padding: 0;
     font-size: 0.5em;
     cursor: pointer;
@@ -24,30 +24,30 @@
 
 /* Red for off */
 .toggle.off {
-    background-color: rgba(var(--color-red), var(--unchecked-alpha)); /* Faint red */
+    background-color: rgba(var(--color-red), var(--unchecked-alpha));
     border: 1px solid white;
 }
 
 .toggle.off[checked="true"] {
-    background-color: rgba(var(--color-red), var(--checked-alpha)); /* Vivid red when checked */
+    background-color: rgba(var(--color-red), var(--checked-alpha));
 }
 
 /* Yellow for na */
 .toggle.na {
-    background-color: rgba(var(--color-yellow), var(--unchecked-alpha)); /* Faint yellow */
+    background-color: rgba(var(--color-yellow), var(--unchecked-alpha));
     border: 1px solid white;
 }
 
 .toggle.na[checked="true"] {
-    background-color: rgba(var(--color-yellow), var(--checked-alpha)); /* Vivid yellow when checked */
+    background-color: rgba(var(--color-yellow), var(--checked-alpha));
 }
 
 /* Green for on */
 .toggle.on {
-    background-color: rgba(var(--color-green), var(--unchecked-alpha)); /* Faint green */
+    background-color: rgba(var(--color-green), var(--unchecked-alpha));
     border: 1px solid white;
 }
 
 .toggle.on[checked="true"] {
-    background-color: rgba(var(--color-green), var(--checked-alpha)); /* Vivid green when checked */
+    background-color: rgba(var(--color-green), var(--checked-alpha));
 }
