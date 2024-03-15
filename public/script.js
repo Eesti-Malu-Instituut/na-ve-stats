@@ -49,6 +49,11 @@ const fetchAllikad = async () => {
 
     document.querySelectorAll('.toggle').forEach((toggleLabel) => {
         toggleLabel.addEventListener('click', async (e) => {
+            // Prevent clicking on already selected buttons
+            if (e.target.hasAttribute('checked')) {
+                return;
+            }
+
             // Disable all toggle buttons while the query runs
             document.querySelectorAll('.toggle').forEach((toggleButton) => {
                 toggleButton.disabled = true;
