@@ -78,7 +78,7 @@ const fetchAllikad = async () => {
                 document.getElementById('query').value = countQuery;
                 const countResponse = await fetch('/query', { ...options, body: JSON.stringify({ query: countQuery }) });
                 const countResult = await countResponse.json();
-                console.log(countResult);
+                console.log(`Count: ${countResult.length} from on: ${selectedOnRows}, off: ${selectedOffRows}`);
                 document.getElementById('queryResult').textContent = countResult.length;
             }
         });
