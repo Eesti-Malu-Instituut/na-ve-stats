@@ -16,11 +16,16 @@ body {
     border-radius: 8px;
     border: black 2px solid;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 h1 {
     text-align: center;
     color: #007bff;
+    margin: 0 0 0.5em 0;
 }
 
 #staticTopSection {
