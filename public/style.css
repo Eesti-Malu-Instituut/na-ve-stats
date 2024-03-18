@@ -1,5 +1,16 @@
 /* style.css */
 
+:root {
+    --color-blue: 10, 130, 160;
+    --color-red: 180, 60, 60;  /* Deep Crimson Red */
+    --color-green: 20, 180, 100;  /* Green */
+    --color-yellow: 255, 220, 0;  /* Medium Yellow */
+
+    --unchecked-alpha: 0.2; /* Default alpha value for unchecked state */
+    --checked-alpha: 1; /* Default alpha value for checked state */
+    --toggle-border-radius: 10px; /* Default border radius */
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -24,7 +35,7 @@ body {
 
 h1 {
     text-align: center;
-    color: #007bff;
+    color: rgb(var(--color-blue));
     margin: 0 0 0.5em 0;
 }
 
@@ -72,7 +83,12 @@ form {
 
 .allikas {
     font-size: 12px;
-    color: #666;
+    color: --var(color-blue);
     display: inline;
     margin-left: 1em;
+}
+
+#resultQuery .sql-keyword {
+    color: rgb(var(--color-blue));
+    font-weight: bold;
 }

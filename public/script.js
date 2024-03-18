@@ -20,9 +20,7 @@ const AND_QUERY_TEMPLATE =
 `
 
 const DISPLAY_QUERY_TEMPLATE =
-`
-SELECT * FROM repis.kirjed WHERE persoon IN
-(%s);`
+`SELECT * FROM repis.kirjed WHERE persoon IN (%s);`
 
 const sprintf = (template, ...args) => {
     return template.replace(/%s/g, () => args.shift());

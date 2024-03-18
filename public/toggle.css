@@ -1,15 +1,5 @@
 /* toggle.css */
 
-:root {
-    --color-red: 255, 0, 0;
-    --color-green: 0, 255, 0;
-    --color-yellow: 255, 255, 0;
-    --color-blue: 100, 100, 255;
-    --unchecked-alpha: 0.2; /* Default alpha value for unchecked state */
-    --checked-alpha: 1; /* Default alpha value for checked state */
-    --toggle-border-radius: 10px; /* Default border radius */
-}
-
 .toggle-switch {
     display: inline-block;
     border: 1px solid #7b1f06;
