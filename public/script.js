@@ -47,6 +47,10 @@ const switchToggle = async (e) => {
     document.querySelectorAll('.toggle').forEach((toggleButton) => {
         toggleButton.disabled = true;
     });
+    // Disable the AND/OR buttons while the query runs
+    document.querySelectorAll("#andOrToggle > button").forEach((toggleButton) => {
+        toggleButton.disabled = true;
+    });
 
     // Record the start time
     const startTime = Date.now();
@@ -99,6 +103,13 @@ const switchToggle = async (e) => {
     document.querySelectorAll('.toggle').forEach((toggleButton) => {
         toggleButton.disabled = false;
     });
+
+    // Re-enable the AND/OR buttons after the query completes, if more than one allikas is included
+    if (includedAllikas.length > 1) {
+        document.querySelectorAll("#andOrToggle > button").forEach((toggleButton) => {
+            toggleButton.disabled = false;
+        });
+    }
 };
 
 const fetchAllikad = async () => {
@@ -155,6 +166,15 @@ const highlightSQL = (sql) => {
     return sql.replace(/(SELECT|FROM|LEFT JOIN|WHERE|AND|OR|IN|ON|DISTINCT|IS NULL|IS NOT NULL|HAVING|GROUP BY)/g, '<span class="sql-keyword">$1</span>');
 };
 
+// Add listeners to 'andOrToggle' buttons
+const andButton = document.getElementById('andQuery')
+andButton.setAttribute('checked', 'true');
+andButton.disabled = true;
+andButton.addEventListener('click', switchToggle);
+const orButton = document.getElementById('orQuery')
+orButton.addEventListener('click', switchToggle);
+orButton.disabled = true;
+
 fetchAllikad()
 
 async function performQuery(includedAllikas, excludedAllikas) {
@@ -164,7 +184,7 @@ async function performQuery(includedAllikas, excludedAllikas) {
 
     // Add the AND_QUERY_TEMPLATE if more than one allikas is included
     // and 'AND/OR' is switched to 'AND'
-    if (includedAllikas.length > 1 && document.getElementById('and-query').getAttribute('checked') === 'true') {
+    if (includedAllikas.length > 1 && document.getElementById('andQuery').getAttribute('checked') === 'true') {
         countQuery += sprintf(AND_QUERY_TEMPLATE, includedAllikas.length);
     }
 
