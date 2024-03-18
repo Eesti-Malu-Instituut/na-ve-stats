@@ -150,7 +150,7 @@ const fetchAllikad = async () => {
 };
 
 const highlightSQL = (sql) => {
-    return sql.replace(/(SELECT|FROM|LEFT JOIN|WHERE|AND|OR|IN|ON|DISTINCT|IS|NULL)/g, '<span class="sql-keyword">$1</span>');
+    return sql.replace(/(SELECT|FROM|LEFT JOIN|WHERE|AND|OR|IN|ON|DISTINCT|IS NULL|IS NOT NULL|HAVING|GROUP BY)/g, '<span class="sql-keyword">$1</span>');
 };
 
 fetchAllikad()
