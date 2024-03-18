@@ -110,6 +110,15 @@ const switchToggle = async (e) => {
     }
 };
 
+const fetchTotalCount = async () => {
+    // Count distinct 'persoon' values in the 'kirjed' table
+    const totalCountQuery = 'SELECT COUNT(DISTINCT persoon) as count FROM repis.kirjed WHERE persoon <> \'0000000000\';';
+    const totalCountResponse = await fetch('/query', { ...options, body: JSON.stringify({ query: totalCountQuery }) });
+    const totalCountResult = await totalCountResponse.json();
+    console.log(`Total Count: ${totalCountResult[0].count}`);
+    document.getElementById('totalCount').textContent = `Total Count: ${totalCountResult[0].count}`;
+}
+
 const fetchAllikad = async () => {
     
     const allikadQuery = 'select kood, allikas from allikad where isFilter = 1 order by allikas';
@@ -173,6 +182,8 @@ const orButton = document.getElementById('orQuery')
 orButton.addEventListener('click', switchToggle);
 orButton.disabled = true;
 
+// Fetch the total count and allikad
+fetchTotalCount()
 fetchAllikad()
 
 async function performQuery(includedAllikas, excludedAllikas) {
