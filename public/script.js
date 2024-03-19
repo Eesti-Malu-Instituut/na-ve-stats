@@ -8,9 +8,8 @@ const COUNT_QUERY_TEMPLATE =
         FROM repis.kirjed
         WHERE allikas IN (%s)
     ) ex ON k.persoon = ex.persoon
-    WHERE k.allikas IN (%s)
-    AND k.persoon <> '0000000000'
-    AND ex.persoon IS NULL
+    WHERE ex.persoon IS NULL AND k.persoon <> '0000000000'
+    AND k.allikas IN (%s)
 `
 
 const AND_QUERY_TEMPLATE =
@@ -71,8 +70,8 @@ const switchToggle = async (e) => {
 
     // Build the list of allikas values to be included and excluded in the query
     const includedAllikas = [];
-    const excludedAllikas = ['']; // Add an empty string to avoid SQL error because of missing value
-    document.querySelectorAll('button[type="button"][checked="true"]').forEach((checkedFilter) => {
+    const excludedAllikas = [];
+    document.querySelectorAll('button.toggle[type="button"][checked="true"]').forEach((checkedFilter) => {
         // skip the na values as they are not relevant
         if (checkedFilter.value === 'na') {
             return;
@@ -81,9 +80,14 @@ const switchToggle = async (e) => {
         if (checkedFilter.value === 'on') {
             includedAllikas.push(kood);
         } else {
+            console.log('excludedAllikas:', kood);
             excludedAllikas.push(kood);
         }
     });
+    if (excludedAllikas.length === 0) {
+        // Add an empty string to avoid SQL error because of missing value
+        excludedAllikas.push('');
+    }
 
     if (includedAllikas.length > 0) {
         // Convert the arrays into SQL terms
