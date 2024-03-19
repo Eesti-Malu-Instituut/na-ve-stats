@@ -182,6 +182,25 @@ const orButton = document.getElementById('orQuery')
 orButton.addEventListener('click', switchToggle);
 orButton.disabled = true;
 
+const copySQLToClipboard = (domElement) => {
+    const resultQueryText = domElement.textContent;
+    // const blob = new Blob([resultQueryText], { type: 'text/plain' });
+    navigator.clipboard.writeText(resultQueryText).then(() => {
+        console.log('Copied to clipboard');
+    }).catch((error) => {
+        console.error('Copy failed', error);
+    });
+};
+
+// Add listener to the copy button
+// but hide the copy button, if not on secure connection
+const copyButton = document.getElementById('copySQL')
+if (window.location.protocol === 'https:') {
+    copyButton.addEventListener('click', copySQLToClipboard);
+} else {
+    copyButton.style.display = 'none';
+}
+
 // Fetch the total count and allikad
 fetchTotalCount()
 fetchAllikad()
